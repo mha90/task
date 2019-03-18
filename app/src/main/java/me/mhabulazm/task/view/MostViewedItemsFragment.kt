@@ -3,11 +3,11 @@ package me.mhabulazm.task.view
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import kotlinx.android.synthetic.main.fragment_most_viewed_items.*
+import me.mhabulazm.task.MainActivity
 import me.mhabulazm.task.R
 import me.mhabulazm.task.adapter.MostViewedItemsAdapter
 import me.mhabulazm.task.api.response.Result
@@ -21,7 +21,8 @@ import me.mhabulazm.task.presenter.MostViewedPresenter
 class MostViewedItemsFragment : IMostViewedView, Fragment(), MostViewedItemsAdapter.MostViewedItemClickListener {
     override fun onItemClick(item: Result?) {
         item?.let {
-            ItemDetailsFragment.newInstance(item)
+            val detailsFragment = ItemDetailsFragment.newInstance(item)
+            (activity as MainActivity).addFragment(detailsFragment, true)
         }
     }
 
@@ -29,37 +30,27 @@ class MostViewedItemsFragment : IMostViewedView, Fragment(), MostViewedItemsAdap
         MostViewedPresenter()
     }
 
-    private val mostViewedItemsRecyclerView: RecyclerView? by lazy {
-        view?.findViewById<RecyclerView>(R.id.mostViewedItemsRecyclerView)
-    }
-
-    private val emptyStateTextView: TextView? by lazy {
-        view?.findViewById<TextView>(R.id.emptyStateTextView)
-    }
-
     lateinit var adapter: MostViewedItemsAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_most_viewed_items, container, false)
-        presenter.attachView(this)
-        return view
+        return inflater.inflate(R.layout.fragment_most_viewed_items, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onResume() {
+        super.onResume()
+        presenter.attachView(this)
         presenter.fetchMostViewedItems()
     }
 
-    override fun onDetach() {
+    override fun onDestroyView() {
         presenter.detachView(this)
-        super.onDetach()
+        super.onDestroyView()
     }
 
     override fun showEmptyState() {
         emptyStateTextView?.visibility = View.VISIBLE
         mostViewedItemsRecyclerView?.visibility = View.GONE
     }
-
 
     override fun showMostViewedItems(mostViewedItems: List<Result>) {
         emptyStateTextView?.visibility = View.GONE
@@ -77,11 +68,10 @@ class MostViewedItemsFragment : IMostViewedView, Fragment(), MostViewedItemsAdap
 
     override fun hideProgress() {
         (activity as BaseActivity).hideProgress()
-
     }
 
-    override fun showError(errorMessage: String?) {
-
+    override fun showError(errorMessage: String) {
+        (activity as BaseActivity).showError(errorMessage)
     }
 
 }
