@@ -20,7 +20,7 @@ import me.mhabulazm.task.api.response.Result;
  * Created by mhabulazm on 3/18/19.
  * mhabulazm@gmail.com
  */
-public class MostViewedItemsAdapter extends RecyclerView.Adapter<MostViewedItemsAdapter.ViewHolder> {
+public class MostViewedItemsAdapter extends RecyclerView.Adapter<MostViewedItemsAdapter.ItemViewHolder> {
     private List<Result> results;
     private MostViewedItemClickListener mostViewedItemClickListener;
 
@@ -32,14 +32,14 @@ public class MostViewedItemsAdapter extends RecyclerView.Adapter<MostViewedItems
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View view = inflater.inflate(R.layout.list_item_most_viewed, viewGroup, false);
-        return new ViewHolder(view);
+        return new ItemViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull ItemViewHolder viewHolder, int i) {
         viewHolder.bind(results.get(i));
     }
 
@@ -48,7 +48,7 @@ public class MostViewedItemsAdapter extends RecyclerView.Adapter<MostViewedItems
         return results.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ItemViewHolder extends RecyclerView.ViewHolder {
         final TextView headerTextView;
         final TextView dateTextView;
         final ImageView articleImageView;
@@ -56,7 +56,7 @@ public class MostViewedItemsAdapter extends RecyclerView.Adapter<MostViewedItems
         final TextView lineTextView;
 
 
-        ViewHolder(@NonNull View v) {
+        ItemViewHolder(@NonNull View v) {
             super(v);
             headerTextView = v.findViewById(R.id.title);
             articleImageView = v.findViewById(R.id.itemImageView);

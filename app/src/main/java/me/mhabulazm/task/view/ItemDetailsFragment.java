@@ -23,7 +23,8 @@ public class ItemDetailsFragment extends Fragment {
     private static final String KEY_RESULT = "RESULT";
     private Result result;
     private ImageView articleImageView;
-    private TextView titleTextView, detailsTextView;
+    private TextView titleTextView;
+    private TextView detailsTextView;
 
     public static ItemDetailsFragment newInstance(Result result) {
         Bundle args = new Bundle();

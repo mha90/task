@@ -2,6 +2,7 @@ package me.mhabulazm.task.common;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
@@ -27,7 +28,7 @@ public class ProgressDialog extends Dialog {
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         if (progressBar.getIndeterminateDrawable() != null) {
             progressBar.getIndeterminateDrawable().
-                    setColorFilter(context.getResources().getColor(R.color.colorAccent),
+                    setColorFilter(ContextCompat.getColor(context, R.color.colorAccent),
                             android.graphics.PorterDuff.Mode.SRC_IN);
         }
         dialog.show();

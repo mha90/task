@@ -37,7 +37,7 @@ public class Result implements Parcelable {
     private String title;
     @SerializedName("abstract")
     @Expose
-    private String _abstract;
+    private String articleAbstract;
     @SerializedName("published_date")
     @Expose
     private String publishedDate;
@@ -70,7 +70,7 @@ public class Result implements Parcelable {
         byline = in.readString();
         type = in.readString();
         title = in.readString();
-        _abstract = in.readString();
+        articleAbstract = in.readString();
         publishedDate = in.readString();
         source = in.readString();
         id = in.readLong();
@@ -153,11 +153,11 @@ public class Result implements Parcelable {
     }
 
     public String getAbstract() {
-        return _abstract;
+        return articleAbstract;
     }
 
     public void setAbstract(String _abstract) {
-        this._abstract = _abstract;
+        this.articleAbstract = _abstract;
     }
 
     public String getPublishedDate() {
@@ -229,7 +229,7 @@ public class Result implements Parcelable {
         dest.writeString(byline);
         dest.writeString(type);
         dest.writeString(title);
-        dest.writeString(_abstract);
+        dest.writeString(articleAbstract);
         dest.writeString(publishedDate);
         dest.writeString(source);
         dest.writeLong(id);
