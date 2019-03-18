@@ -1,5 +1,8 @@
 package me.mhabulazm.task.api.response;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -9,7 +12,7 @@ import java.util.List;
  * Created by mhabulazm on 3/18/19.
  * mhabulazm@gmail.com
  */
-public class Result {
+public class Result implements Parcelable {
 
     @SerializedName("url")
     @Expose
@@ -43,31 +46,55 @@ public class Result {
     private String source;
     @SerializedName("id")
     @Expose
-    private Integer id;
+    private long id;
+
     @SerializedName("asset_id")
     @Expose
-    private Integer assetId;
+    private long assetId;
+
     @SerializedName("views")
     @Expose
     private Integer views;
-    @SerializedName("des_facet")
-    @Expose
-    private List<String> desFacet = null;
-    @SerializedName("org_facet")
-    @Expose
-    private List<String> orgFacet = null;
-    @SerializedName("per_facet")
-    @Expose
-    private String perFacet;
-    @SerializedName("geo_facet")
-    @Expose
-    private List<String> geoFacet = null;
+
     @SerializedName("media")
     @Expose
     private List<Medium> media = null;
     @SerializedName("uri")
     @Expose
     private String uri;
+
+    protected Result(Parcel in) {
+        url = in.readString();
+        adxKeywords = in.readString();
+        section = in.readString();
+        byline = in.readString();
+        type = in.readString();
+        title = in.readString();
+        _abstract = in.readString();
+        publishedDate = in.readString();
+        source = in.readString();
+        id = in.readLong();
+        assetId = in.readLong();
+        if (in.readByte() == 0) {
+            views = null;
+        } else {
+            views = in.readInt();
+        }
+        media = in.createTypedArrayList(Medium.CREATOR);
+        uri = in.readString();
+    }
+
+    public static final Creator<Result> CREATOR = new Creator<Result>() {
+        @Override
+        public Result createFromParcel(Parcel in) {
+            return new Result(in);
+        }
+
+        @Override
+        public Result[] newArray(int size) {
+            return new Result[size];
+        }
+    };
 
     public String getUrl() {
         return url;
@@ -149,7 +176,7 @@ public class Result {
         this.source = source;
     }
 
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
@@ -157,7 +184,7 @@ public class Result {
         this.id = id;
     }
 
-    public Integer getAssetId() {
+    public long getAssetId() {
         return assetId;
     }
 
@@ -171,38 +198,6 @@ public class Result {
 
     public void setViews(Integer views) {
         this.views = views;
-    }
-
-    public List<String> getDesFacet() {
-        return desFacet;
-    }
-
-    public void setDesFacet(List<String> desFacet) {
-        this.desFacet = desFacet;
-    }
-
-    public List<String> getOrgFacet() {
-        return orgFacet;
-    }
-
-    public void setOrgFacet(List<String> orgFacet) {
-        this.orgFacet = orgFacet;
-    }
-
-    public String getPerFacet() {
-        return perFacet;
-    }
-
-    public void setPerFacet(String perFacet) {
-        this.perFacet = perFacet;
-    }
-
-    public List<String> getGeoFacet() {
-        return geoFacet;
-    }
-
-    public void setGeoFacet(List<String> geoFacet) {
-        this.geoFacet = geoFacet;
     }
 
     public List<Medium> getMedia() {
@@ -219,5 +214,33 @@ public class Result {
 
     public void setUri(String uri) {
         this.uri = uri;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(url);
+        dest.writeString(adxKeywords);
+        dest.writeString(section);
+        dest.writeString(byline);
+        dest.writeString(type);
+        dest.writeString(title);
+        dest.writeString(_abstract);
+        dest.writeString(publishedDate);
+        dest.writeString(source);
+        dest.writeLong(id);
+        dest.writeLong(assetId);
+        if (views == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(views);
+        }
+        dest.writeTypedList(media);
+        dest.writeString(uri);
     }
 }

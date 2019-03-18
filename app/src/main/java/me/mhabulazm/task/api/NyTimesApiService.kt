@@ -10,7 +10,6 @@ import retrofit2.http.GET
  */
 interface NyTimesApiService {
 
-    //    fixme period and key to be variables
     @GET("svc/mostpopular/v2/viewed/1.json?api-key=FacF0CV2nJ2AGDq6NLUxEyquQ5Gkcj1d")
     fun getMostViewed(): Single<MostViewedResponse>
 
